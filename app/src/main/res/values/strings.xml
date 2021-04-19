@@ -3,4 +3,5 @@
     <string name="text_title">Titulo</string>
     <string name="text_save">Salvar</string>
     <string name="remover_ultimo_item">Remover ultimo item</string>
+    <string name="postition"># Postition</string>
 </resources>
