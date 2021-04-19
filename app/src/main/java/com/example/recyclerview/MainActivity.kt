@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
             list.add(list.size, newItem)
             adapter.notifyItemInserted(list.size)
+            title.setText("")
         }
     }
 
