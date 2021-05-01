@@ -2,7 +2,7 @@ package com.example.recyclerview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,11 +11,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
 
     private val list: ArrayList<Item> = ArrayList()
 
-    private val adapter = RecyclerAdapter(list)
+    private val adapter = RecyclerAdapter(list, this)
+
+    var selectedPosition: Int = -1;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +25,34 @@ class MainActivity : AppCompatActivity() {
 
         val view = findViewById<RecyclerView>(R.id.recycler_view)
 
+        val button = findViewById<Button>(R.id.button)
+
         view.adapter = adapter
         view.layoutManager = LinearLayoutManager(this)
         view.setHasFixedSize(true)
+
+        button.setOnClickListener {
+            insertItemOrUpdateItem()
+        }
     }
 
-    fun insertItem(view: View) {
+    override fun onItemClick(position: Int) {
+        val selectedItem: Item = list[position]
+
+        val title = findViewById<EditText>(R.id.edit_text_title)
+
+        title.setText(selectedItem.text1)
+
+        selectedPosition = position
+
+        adapter.notifyItemChanged(position)
+
+        Toast.makeText(this, "Editando item ${position + 1} (${selectedItem.text1})", Toast.LENGTH_SHORT).show()
+
+        adapter.notifyItemChanged(position)
+    }
+
+    private fun insertItemOrUpdateItem() {
 
         val title = findViewById<EditText>(R.id.edit_text_title)
 
@@ -36,29 +60,30 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Você precisa adicionar um título para o item.", Toast.LENGTH_SHORT)
                 .show()
         } else {
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
+            val dateFormat = SimpleDateFormat("HH:mm:ss - dd/MM/yyyy")
 
             dateFormat.timeZone = TimeZone.getTimeZone("GMT-3")
 
-            val newItem = Item(
-                R.mipmap.ite_logo_round,
-                title.text.toString(),
-                dateFormat.format(Date())
-            )
+            val formatedDate = dateFormat.format(Date())
 
-            list.add(list.size, newItem)
-            adapter.notifyItemInserted(list.size)
+            if (selectedPosition != -1) {
+                list[selectedPosition].text1 = title.text.toString()
+                list[selectedPosition].text2 = formatedDate
+                adapter.notifyItemChanged(selectedPosition)
+                selectedPosition = -1
+            } else {
+                val newItemPosition = list.size + 1
+                val newItem = Item(
+                    R.mipmap.ite_logo_round,
+                    title.text.toString(),
+                    formatedDate
+                )
+
+                list.add(list.size, newItem)
+                adapter.notifyItemInserted(list.size)
+            }
+
             title.setText("")
-        }
-    }
-
-    fun removeLast(view: View) {
-        if (list.isEmpty()) {
-            Toast.makeText(this, "Não há items para remover.", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            list.removeAt(list.size - 1)
-            adapter.notifyItemRemoved(list.size)
         }
     }
 }
