@@ -1,18 +1,16 @@
 package com.example.recyclerview
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(
     private val list: List<Item>,
     private val listener: OnItemClickListener,
+    private val longListener: OnLongCLickListener
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +33,7 @@ class RecyclerAdapter(
     override fun getItemCount() = list.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-    View.OnClickListener{
+    View.OnClickListener, View.OnLongClickListener{
         val imageView: ImageView = itemView.findViewById(R.id.image_view)
         val textView1: TextView = itemView.findViewById(R.id.text_view_1)
         val textView2: TextView = itemView.findViewById(R.id.text_view_2)
@@ -43,6 +41,7 @@ class RecyclerAdapter(
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         override fun onClick(v: View?) {
@@ -51,6 +50,19 @@ class RecyclerAdapter(
                 listener.onItemClick(position)
             }
         }
+
+        override fun onLongClick(v: View?): Boolean {
+            val position: Int = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                longListener.onLongClick(position)
+                return true
+            }
+            return false
+        }
+    }
+
+    interface OnLongCLickListener {
+        fun onLongClick(position: Int)
     }
 
     interface OnItemClickListener {

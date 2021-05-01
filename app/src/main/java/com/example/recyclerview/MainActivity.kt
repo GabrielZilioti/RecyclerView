@@ -11,11 +11,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener, RecyclerAdapter.OnLongCLickListener {
 
     private val list: ArrayList<Item> = ArrayList()
 
-    private val adapter = RecyclerAdapter(list, this)
+    private val adapter = RecyclerAdapter(list, this, this)
 
     var selectedPosition: Int = -1;
 
@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
         Toast.makeText(this, "Editando item ${position + 1} (${selectedItem.text1})", Toast.LENGTH_SHORT).show()
 
         adapter.notifyItemChanged(position)
+    }
+
+    override fun onLongClick(position: Int) {
+        list.removeAt(position)
+        adapter.notifyItemRemoved(position)
     }
 
     private fun insertItemOrUpdateItem() {
