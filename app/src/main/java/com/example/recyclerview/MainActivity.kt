@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -27,12 +28,18 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener, R
 
         val button = findViewById<Button>(R.id.button)
 
+        val swipeRefresh = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh)
+
         view.adapter = adapter
         view.layoutManager = LinearLayoutManager(this)
         view.setHasFixedSize(true)
 
         button.setOnClickListener {
             insertItemOrUpdateItem()
+        }
+
+        swipeRefresh.setOnRefreshListener {
+            invertAndReorganizeItems()
         }
     }
 
@@ -55,6 +62,15 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener, R
     override fun onLongClick(position: Int) {
         list.removeAt(position)
         adapter.notifyItemRemoved(position)
+    }
+
+    private fun invertAndReorganizeItems() {
+        val swipeRefresh = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh)
+
+        list[0].text1 = "ATUALIZADO"
+        adapter.notifyItemChanged(0)
+
+        swipeRefresh.isRefreshing = false
     }
 
     private fun insertItemOrUpdateItem() {

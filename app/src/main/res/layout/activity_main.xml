@@ -6,14 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/buttons"
-        android:clipToPadding="false"
-        android:padding="4dp"
-        tools:listitem="@layout/item" />
+        android:layout_below="@id/buttons">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/buttons"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            tools:listitem="@layout/item" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/buttons"
@@ -30,8 +37,8 @@
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:hint="@string/text_title"
-            android:imeOptions="actionDone"
             android:imeActionLabel="Save"
+            android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/button"
             app:layout_constraintTop_toTopOf="parent" />
