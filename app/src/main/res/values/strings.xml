@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RecyclerView</string>
+    <string name="app_name">Atividade Turbo</string>
     <string name="text_title">Titulo</string>
     <string name="text_save">Salvar</string>
     <string name="remover_ultimo_item">Remover ultimo item</string>
