@@ -74,6 +74,10 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener,
                 print("Ação cancelada pelo usuário")
             }
             .setPositiveButton("Deletar") { _, _ ->
+                if (position == selectedPosition) {
+                    selectedPosition = -1
+                    findViewById<EditText>(R.id.edit_text_title).setText("")
+                }
                 list.removeAt(position)
                 adapter.notifyItemRemoved(position)
             }
