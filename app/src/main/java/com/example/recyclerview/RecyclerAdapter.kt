@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(
     private val list: List<Item>,
-    private val listener: OnItemClickListener,
-    private val longListener: OnLongCLickListener
+    private val listener: MainActivity,
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,7 +53,7 @@ class RecyclerAdapter(
         override fun onLongClick(v: View?): Boolean {
             val position: Int = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                longListener.onLongClick(position)
+                listener.onLongClick(position)
                 return true
             }
             return false

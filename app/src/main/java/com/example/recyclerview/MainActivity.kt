@@ -14,12 +14,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
-class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener,
-    RecyclerAdapter.OnLongCLickListener {
+class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener, RecyclerAdapter.OnLongCLickListener {
 
     private val list: ArrayList<Item> = ArrayList()
 
-    private val adapter = RecyclerAdapter(list, this, this)
+    private val adapter = RecyclerAdapter(list, this)
 
     var selectedPosition: Int = -1;
 
@@ -112,7 +111,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener,
         if (title.text.isEmpty()) {
             showToast("Você precisa adicionar um título para o item.")
         } else {
-            val dateFormat = SimpleDateFormat("HH:mm:ss - dd/MM/yyyy")
+            val dateFormat = SimpleDateFormat("HH:mm:ss - dd/MM/yyyy", Locale.ROOT)
 
             dateFormat.timeZone = TimeZone.getTimeZone("GMT-3")
 
